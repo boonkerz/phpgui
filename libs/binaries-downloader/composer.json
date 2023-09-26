@@ -1,0 +1,30 @@
+{
+    "autoload": {
+        "psr-4": {
+            "Local\\BinariesDownloader\\": "src"
+        }
+    },
+    "extra": {
+        "class": "Local\\BinariesDownloader\\Plugin"
+    },
+    "minimum-stability": "dev",
+    "name": "local/binaries-downloader",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.1",
+        "composer-plugin-api": "^2.0"
+    },
+    "require-dev": {
+        "composer/composer": "^2.0",
+        "symfony/var-dumper": "^5.4|^6.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform-check": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "local/binaries-downloader": true
+        }
+    },
+    "type": "composer-plugin"
+}
