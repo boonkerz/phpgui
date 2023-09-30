@@ -9,6 +9,7 @@ use PHPGui\Interface\Driver\Driver;
 use PHPGui\Lifecycle\Annotation\OnShow;
 use PHPGui\Lifecycle\Annotation\OnUnload;
 use PHPGui\Lifecycle\Annotation\OnUpdate;
+use PHPGui\Lifecycle\Context;
 use PHPGui\Ui\Window;
 
 class AbstractController
@@ -39,6 +40,14 @@ class AbstractController
     {
         if($this->window !== null) {
             $this->driver->update($this->window);
+        }
+    }
+
+    public function closeWindow(): void
+    {
+        if($this->window !== null) {
+            $this->driver->close($this->window);
+            $this->app->close($this);
         }
     }
 

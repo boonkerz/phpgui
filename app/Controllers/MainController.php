@@ -18,6 +18,7 @@ use PHPGui\Ui\Position;
 use PHPGui\Ui\Size;
 use PHPGui\Ui\Style\Font;
 use PHPGui\Ui\Widgets\Label;
+use PHPGui\Ui\Window;
 
 class MainController extends AbstractController
 {
@@ -49,6 +50,7 @@ class MainController extends AbstractController
         $this->window->exitButton->setOnClick(fn() => $this->clickExit());
         $this->window->reloadButton->setOnClick(fn() => $this->clickReload());
         $this->window->clearButton->setOnClick(fn() => $this->clickClear());
+        $this->window->settingsButton->setOnClick(fn() => $this->clickOpenSettings());
         $this->window->textEdit1->value = &$this->text;
         $this->window->textEdit2->value = &$this->text;
     }
@@ -83,5 +85,10 @@ class MainController extends AbstractController
                 }
             }
         }
+    }
+
+    private function clickOpenSettings()
+    {
+        $this->app->show(SettingsController::class);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Controllers\MainController;
+use App\Controllers\SimpleController;
 use PHPGui\Application\Application;
 use PHPGui\Lifecycle\Lifecycle;
 

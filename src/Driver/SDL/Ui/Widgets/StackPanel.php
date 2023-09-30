@@ -75,8 +75,6 @@ class StackPanel extends Base implements Widget, Element
             $this->mouseMovementPanel['end'] = $this->mouseMovementPanel['to'];
         }
 
-        $window->getSDL()->roundedRectangleRGBA($window->getRenderPtr(), $originalX, $originalY, $originalX + $originalWidth,  $originalY + $originalHeight, 2, 128, 128, 128, 255);
-
         if($this->panelSize[1] > $originalHeight && $actWidget->getAlign() === AlignType::VERTICAL) {
             $this->drawVScrollBar($originalX, $originalY, $originalWidth, $originalHeight);
         }else{
@@ -116,7 +114,7 @@ class StackPanel extends Base implements Widget, Element
         $ratio = ($originalHeight / $this->panelSize[1]);
 
         $sliderHeight = (int)($ratio*100 * $ohP);
-        $this->SDL->boxRGBA($this->window->getRenderPtr(), $originalX + $originalWidth-10, $originalY + (int)($this->mouseMovementPanel['to'][1]*$ratio*-1), $originalX + $originalWidth - 1,  $originalY + $sliderHeight + (int)($this->mouseMovementPanel['to'][1]*$ratio*-1), 211, 211, 211, 255);
+        $this->SDL->boxRGBA($this->window->getRenderPtr(), $originalX + $originalWidth-10, $originalY + (int)($this->mouseMovementPanel['to'][1]*$ratio*-1), $originalX + $originalWidth - 2,  $originalY + $sliderHeight + (int)($this->mouseMovementPanel['to'][1]*$ratio*-1), 211, 211, 211, 255);
 
     }
 
@@ -151,8 +149,6 @@ class StackPanel extends Base implements Widget, Element
         }
         $availableViewPort->width = $originalWidth;
         $availableViewPort->height = $originalHeight;
-
-        $window->getSDL()->roundedRectangleRGBA($window->getRenderPtr(), $originalX, $originalY, $originalX + $originalWidth,  $originalY + $originalHeight, 2, 128, 128, 128, 255);
 
         return new Size($originalWidth, $originalHeight);
     }

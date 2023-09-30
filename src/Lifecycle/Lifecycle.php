@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace PHPGui\Lifecycle;
 
 use PHPGui\Application\Application;
+use PHPGui\Controller\AbstractController;
 use PHPGui\Event\Event;
 use PHPGui\Event\EventType;
 use PHPGui\Interface\EventLoop\LoopInterface;
@@ -27,18 +28,15 @@ class Lifecycle implements WorkerInterface
 
     protected ?object $controller = null;
 
+    protected Collection $contextCollection;
     protected ?Context $context = null;
 
     public function __construct(Application $app)
     {
         $app->instance(self::class, $this);
         $app->instance(static::class, $this);
-
+        $this->contextCollection = new Collection();
         $this->app = $app;
-
-        //$this->window = $app->make(WindowInterface::class);
-        //$this->renderer = $app->make(RendererInterface::class);
-        /*$this->viewport = $app->make(ViewportInterface::class);*/
         $this->loop = $app->make(LoopInterface::class);
 
         $this->loop->use($this);
@@ -47,6 +45,7 @@ class Lifecycle implements WorkerInterface
 
     public function onUpdate(float $delta): void
     {
+        $this->contextCollection->map(fn(Context $context) => $context->update($delta));
         if ($this->context !== null) {
             $this->context->update($delta);
         }
@@ -54,19 +53,16 @@ class Lifecycle implements WorkerInterface
 
     public function onRender(float $delta): void
     {
-        //$this->renderer->clear();
-
+        $this->contextCollection->map(fn(Context $context) => $context->render($delta));
         if ($this->context !== null) {
             $this->context->render($delta);
         }
-
-        //$this->renderer->present();
     }
 
     public function onEvent(Event $event): void
     {
         $this->defaultEventLogic($event);
-
+        $this->contextCollection->map(fn(Context $context) => $context->event($event));
         if ($this->context !== null) {
             $this->context->event($event);
         }
@@ -82,8 +78,9 @@ class Lifecycle implements WorkerInterface
                 $this->loop->resume();
                 break;
             case EventType::QUIT:
+                $this->contextCollection->map(fn(Context $context) => $context->unload());
+                $this->contextCollection = new Collection();
                 $this->loop->stop();
-                $this->context->unload();
                 break;
         }
     }
@@ -105,8 +102,8 @@ class Lifecycle implements WorkerInterface
     public function show(string $controller, array $arguments = []): void
     {
 
-        if ($this->context !== null) {
-            $this->context->hide();
+        if ($this->contextCollection !== null) {
+            $this->contextCollection->map(fn(Context $context) => $context->hide());
         }
 
         foreach ($arguments as $name => $argument) {
@@ -115,18 +112,23 @@ class Lifecycle implements WorkerInterface
             }
         }
 
-        $this->controller = $this->app->make($controller);
-        $this->context = $this->app->make(Context::class, [
-            'context' => $this->controller,
+        $controller = $this->app->make($controller);
+        $context = $this->app->make(Context::class, [
+            'context' => $controller,
         ]);
 
-        $this->context->show();
+        $context->show();
+
+        $this->contextCollection->add($context);
+    }
+
+    public function close(AbstractController $self): void
+    {
+        $this->contextCollection->removeItem($self);
     }
 
     public function run(): void
     {
-        //$this->window->show();
-
         $this->app->run();
     }
 }

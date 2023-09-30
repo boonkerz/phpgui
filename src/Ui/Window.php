@@ -3,12 +3,18 @@
 namespace PHPGui\Ui;
 
 use PHPGui\Interface\Ui\Widget;
-use PHPGui\Ui\Style\Padding;
+use PHPGui\Ui\Widgets\MenuBar;
+use PHPGui\Ui\Widgets\StatusBar;
 
 class Window extends \PHPGui\Ui\Widget
 {
 
     public Widget $widget;
+
+    public ?MenuBar $menuBar = null;
+
+    public ?StatusBar $statusBar = null;
+
 
     public Size $viewPortSize;
 
@@ -38,5 +44,27 @@ class Window extends \PHPGui\Ui\Widget
     public function setViewPortSize(Size $viewPortSize): void
     {
         $this->viewPortSize = $viewPortSize;
+    }
+
+    public function setMenuBar(?MenuBar $menu): Window
+    {
+        $this->menuBar = $menu;
+        return $this;
+    }
+
+    public function getMenuBar(): ?MenuBar
+    {
+        return $this->menuBar;
+    }
+
+    public function setStatusBar(?StatusBar $statusBar): Window
+    {
+        $this->statusBar = $statusBar;
+        return $this;
+    }
+
+    public function getStatusBar(): ?StatusBar
+    {
+        return $this->statusBar;
     }
 }

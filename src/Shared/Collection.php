@@ -99,4 +99,13 @@ abstract class Collection implements IteratorAggregate
             array_shift($this->elements);
         }
     }
+
+    public function removeItem($item): void
+    {
+        $temp = $this->filter(function ($value, $key) use($item){
+            return $value->getControllerClass()!=$item::class;
+        });
+
+        $this->elements = $temp->items();
+    }
 }

@@ -8,4 +8,5 @@ enum State
     case HOVER;
     case FOCUS;
     case PRESSED;
+    case ACTIVE;
 }

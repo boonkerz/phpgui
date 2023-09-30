@@ -128,6 +128,44 @@ trait GFX
 
     }
 
+    public function rectangleRGBA(?CData $renderer, int $x1, int $y1, int $x2, int $y2, int $r, int $g, int $b, int $a)
+    {
+
+        if ($x1 == $x2) {
+            if ($y1 == $y2) {
+                return ($this->pixelRGBA($renderer, $x1, $y1, $r, $g, $b, $a));
+            } else {
+                return ($this->vlineRGBA($renderer, $x1, $y1, $y2, $r, $g, $b, $a));
+            }
+        } else {
+            if ($y1 == $y2) {
+                return ($this->hlineRGBA($renderer, $x1, $x2, $y1, $r, $g, $b, $a));
+            }
+        }
+
+        if ($x1 > $x2) {
+            $tmp = $x1;
+            $x1 = $x2;
+            $x2 = $tmp;
+        }
+
+        if ($y1 > $y2) {
+            $tmp = $y1;
+            $y1 = $y2;
+            $y2 = $tmp;
+        }
+
+        $rect = $this->new('SDL_Rect');
+        $rect->x = $x1;
+        $rect->y = $y1;
+        $rect->w = $x2 - $x1;
+        $rect->h = $y2 - $y1;
+
+        $this->SDL_SetRenderDrawBlendMode($renderer, ($a == 255)? Type::SDL_BLENDMODE_NONE->value: Type::SDL_BLENDMODE_BLEND->value);
+        $this->SDL_SetRenderDrawColor($renderer, $r, $g, $b, $a);
+        $this->SDL_RenderDrawRect($renderer, \FFI::addr($rect));
+    }
+
     public function boxRGBA(?CData $renderer, int $x1, int $y1, int $x2, int $y2, int $r, int $g, int $b, int $a): void
     {
         if ($x1 == $x2) {

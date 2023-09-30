@@ -6,7 +6,6 @@ namespace PHPGui\Ui\Widgets;
 use PHPGui\Ui\Enum\State;
 use PHPGui\Ui\Style\Font;
 use PHPGui\Ui\Style\Style;
-use PHPGui\Ui\Trait\LabelStyle;
 
 class Label extends Base implements \PHPGui\Interface\Ui\Widget
 {

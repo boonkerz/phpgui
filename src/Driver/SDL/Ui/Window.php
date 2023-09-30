@@ -15,7 +15,7 @@ class Window
 
     private \FFI\CData $windowPtr;
 
-    private $renderPtr;
+    private \FFI\CData $renderPtr;
 
     private \FFI\CData $viewPortWidth;
     private \FFI\CData $viewPortHeight;
@@ -53,7 +53,7 @@ class Window
         $this->viewPortWidth = $this->sdl->new('int');
 
         $this->sdl->SDL_GetWindowSize($this->windowPtr, \FFI::addr($this->viewPortWidth), \FFI::addr($this->viewPortHeight));
-
+        $this->sdl->SDL_RaiseWindow($this->windowPtr);
         return $this;
     }
 
@@ -62,6 +62,11 @@ class Window
         $this->sdl->SDL_SetRenderDrawColor($this->renderPtr, 255, 255, 255, 255);
         $this->sdl->SDL_RenderClear($this->renderPtr);
         $this->sdl->SDL_GetWindowSize($this->windowPtr, \FFI::addr($this->viewPortWidth), \FFI::addr($this->viewPortHeight));
+    }
+
+    public function close(): void
+    {
+        $this->sdl->SDL_DestroyWindow($this->windowPtr);
     }
 
     public function endRender(): void

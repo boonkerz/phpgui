@@ -15,6 +15,7 @@ use PHPGui\Event\MoveEvent;
 use PHPGui\Event\MoveUpEvent;
 use PHPGui\Event\ResizeEvent;
 use PHPGui\Event\TextInputEvent;
+use PHPGui\Event\WindowCloseEvent;
 use PHPGui\Interface\Ui\Widget;
 use PHPGui\Keyboard\Key;
 use PHPGui\Ui\Enum\State;
@@ -29,20 +30,17 @@ use function Sodium\add;
 
 class Driver implements \PHPGui\Interface\Driver\Driver
 {
-
     private SDL $sdl;
     private ?\FFI\CData $event;
     protected \FFI\CData $eventPtr;
     private SDL_TTF $sdl_ttf;
 
     private array $windows;
-    private Window $windowFactory;
 
-    public function __construct(SDL $sdl, SDL_TTF $sdl_ttf, Window $window)
+    public function __construct(SDL $sdl, SDL_TTF $sdl_ttf)
     {
         $this->sdl = $sdl;
         $this->sdl_ttf = $sdl_ttf;
-        $this->windowFactory = $window;
     }
 
     public function boot(): void
@@ -64,7 +62,6 @@ class Driver implements \PHPGui\Interface\Driver\Driver
     public function pollEvent(): Event
     {
         $this->sdl->SDL_PollEvent($this->eventPtr);
-
         return match($this->event->type) {
             \PHPGui\Driver\SDL\Internal\Kernel\EventType::SDL_QUIT => new Event(\PHPGui\Event\EventType::QUIT),
             \PHPGui\Driver\SDL\Internal\Kernel\EventType::SDL_MOUSEBUTTONDOWN => $this->handleMouseDown(),
@@ -87,6 +84,10 @@ class Driver implements \PHPGui\Interface\Driver\Driver
             $this->windows[(int)$this->event->window->windowID]->setViewPortHeight($this->event->window->data2);
             return new ResizeEvent(type: EventType::WINDOW_RESIZED, width: (int)$this->event->window->data1, height: (int)$this->event->window->data2);
         }
+        if($this->event->window->event == WindowEvent::SDL_WINDOWEVENT_CLOSE->value) {
+            $this->windows[$this->event->window->windowID]->close();
+            return new WindowCloseEvent(EventType::WINDOW_CLOSE, $this->event->window->windowID);
+        }
         return new Event(type: EventType::NOOP);
     }
 
@@ -96,9 +97,17 @@ class Driver implements \PHPGui\Interface\Driver\Driver
         $this->free();
     }
 
+    public function close(\PHPGui\Ui\Window $window): void
+    {
+        if($window->getHandleId()) {
+            $this->windows[$window->getHandleId()]->close();
+        }
+    }
+
     public function show(\PHPGui\Ui\Window $window): int
     {
-        $windowSDL = $this->windowFactory->createFromWindow($window);
+        $windowFactory = new Window($this->sdl, $this->sdl_ttf);
+        $windowSDL = $windowFactory->createFromWindow($window);
         $this->windows[$windowSDL->getWindowId()] = $windowSDL;
         $window->setViewPortSize(new Size($windowSDL->getViewPortWidth(), $windowSDL->getViewPortHeight()));
         return $windowSDL->getWindowId();
@@ -107,7 +116,7 @@ class Driver implements \PHPGui\Interface\Driver\Driver
 
     public function update(\PHPGui\Ui\Window $window): void
     {
-        if($window->getHandleId()) {
+        if($window->getHandleId() && $this->windows[$window->getHandleId()]) {
             $this->windows[$window->getHandleId()]->startRender();
             $window->setViewPortSize(new Size($this->windows[$window->getHandleId()]->getViewPortWidth(), $this->windows[$window->getHandleId()]->getViewPortHeight()));
             $this->renderElements($window, new ViewPort(0,0, $window->viewPortSize->width, $window->viewPortSize->height), $window->widget);
@@ -119,7 +128,15 @@ class Driver implements \PHPGui\Interface\Driver\Driver
     public function renderElements(\PHPGui\Ui\Window $window, ViewPort $availableSize, Widget $widget): void
     {
         if($window->getHandleId()) {
-            Elements::renderElements($this->windows[$window->getHandleId()], $availableSize, $widget);
+
+            Elements::renderElements($this->windows[$window->getHandleId()], new ViewPort($availableSize->x, $availableSize->y + 20, $availableSize->width, $availableSize->height - 20), $widget);
+            if($window->getMenuBar()) {
+                Elements::renderElements($this->windows[$window->getHandleId()], $availableSize, $window->getMenuBar());
+            }
+            if($window->getStatusBar()) {
+                Elements::renderElements($this->windows[$window->getHandleId()], $availableSize, $window->getStatusBar());
+            }
+
         }
     }
 

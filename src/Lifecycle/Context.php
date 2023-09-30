@@ -65,10 +65,13 @@ class Context
 
     private Application $app;
 
+    private ?string $controllerClass = null;
+
     public function __construct(Application $app, object $context)
     {
         $this->app = $app;
 
+        $this->controllerClass = $context::class;
         /**
          * @var \ReflectionMethod $ref
          * @var Annotation $annotation
@@ -193,5 +196,10 @@ class Context
         foreach ($this->callbacks[self::TYPE_PAUSE] as $callback) {
             $this->app->call($callback);
         }
+    }
+
+    public function getControllerClass(): ?string
+    {
+        return $this->controllerClass;
     }
 }
