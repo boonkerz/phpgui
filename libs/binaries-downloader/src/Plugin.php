@@ -17,8 +17,6 @@ final class Plugin implements PluginInterface
         $sdlTtf->activate($composer, $io);
         $sdlImage = new SDL_image();
         $sdlImage->activate($composer, $io);
-        $raylib = new Raylib();
-        $raylib->activate($composer, $io);
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
@@ -29,8 +27,6 @@ final class Plugin implements PluginInterface
         $sdlTtf->deactivate($composer, $io);
         $sdlImage = new SDL_image();
         $sdlImage->deactivate($composer, $io);
-        $raylib = new Raylib();
-        $raylib->deactivate($composer, $io);
     }
 
     public function uninstall(Composer $composer, IOInterface $io): void
@@ -41,7 +37,5 @@ final class Plugin implements PluginInterface
         $sdlTtf->uninstall($composer, $io);
         $sdlImage = new SDL_image();
         $sdlImage->uninstall($composer, $io);
-        $raylib = new Raylib();
-        $raylib->uninstall($composer, $io);
     }
 }

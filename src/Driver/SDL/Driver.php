@@ -129,7 +129,7 @@ class Driver implements \PHPGui\Interface\Driver\Driver
     {
         if($window->getHandleId()) {
 
-            Elements::renderElements($this->windows[$window->getHandleId()], new ViewPort($availableSize->x, $availableSize->y + 20, $availableSize->width, $availableSize->height - 20), $widget);
+            Elements::renderElements($this->windows[$window->getHandleId()], new ViewPort($availableSize->x, $availableSize->y + ($window->getMenuBar()? 20:0), $availableSize->width, $availableSize->height - 20), $widget);
             if($window->getMenuBar()) {
                 Elements::renderElements($this->windows[$window->getHandleId()], $availableSize, $window->getMenuBar());
             }

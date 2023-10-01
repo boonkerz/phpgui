@@ -45,11 +45,11 @@ class MainWindow extends Window
         $this->textEdit2 = (new TextEdit("Lastname"))->setPaddingAll(4)->setMarginAll(5)->setBorder((new Border())->setAll(2, (new Color(0,0,0,255))));
 
         $this->stackPanel = (new StackPanel())->setAlign(AlignType::VERTICAL)->setMode(StackpanelMode::STACK);
-        $this->setMenuBar((new MainMenu())->buildMainMenu(null));
+        $this->setMenuBar(new MainMenu());
 
         $this->setWidget(
             (new StackPanel(widgets: [
-                (new StackPanel(widgets: [$this->exitButton, $this->settingsButton, $this->reloadButton, $this->clearButton]))->setAlign(AlignType::HORIZONTAL)->setMode(StackpanelMode::STACK),
+                //(new StackPanel(widgets: [$this->exitButton, $this->settingsButton, $this->reloadButton, $this->clearButton]))->setAlign(AlignType::HORIZONTAL)->setMode(StackpanelMode::STACK),
                 (new StackPanel(widgets:
                     [$this->stackPanel,
                         (new TabPanel(tabs: [
@@ -59,7 +59,7 @@ class MainWindow extends Window
                     ]))
                     ->setColumnSizes([20, 80])->setAlign(AlignType::HORIZONTAL),
                  (new FPS())->setPaddingAll(3)
-            ]))->setColumnSizes([30, 0, 30])->setAlign(AlignType::VERTICAL)->setSizeType(SizeType::PX)
+            ]))->setColumnSizes([0, 30])->setAlign(AlignType::VERTICAL)->setSizeType(SizeType::PX)
         );
     }
 }

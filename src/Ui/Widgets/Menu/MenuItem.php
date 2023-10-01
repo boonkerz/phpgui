@@ -24,9 +24,9 @@ class MenuItem extends Item
             }
         }
         $this->setState(State::NORMAL);
-        $this->addStateStyle(State::NORMAL, (new Style())->setBackgroundColor(new Color(128,128,128,0))->setFont((new Font())->setSize(14)));
-        $this->addStateStyle(State::HOVER, (new Style())->setBackgroundColor(new Color(128,128,128,255))->setFont((new Font())->setSize(14)));
-        $this->addStateStyle(State::FOCUS, (new Style())->setBackgroundColor(new Color(79, 158, 227,255))->setFont((new Font())->setSize(14)));
+        $this->addStateStyle(State::NORMAL, (new Style())->setBackgroundColor(new Color(128,128,128,0))->setFont((new Font())->setColor(new Color(0,0,0, 255))->setSize(14)));
+        $this->addStateStyle(State::HOVER, (new Style())->setBackgroundColor(new Color(128,128,128,255))->setFont((new Font())->setColor(new Color(255,255,255,255))->setSize(14)));
+        $this->addStateStyle(State::FOCUS, (new Style())->setBackgroundColor(new Color(79, 158, 227,255))->setFont((new Font())->setColor(new Color(255,255,255,255))->setSize(14)));
 
         return $this;
     }

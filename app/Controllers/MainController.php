@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\App;
+use App\Menu\MainMenu;
 use App\Model\Server;
 use App\Windows\MainWindow;
 use parallel\Events;
@@ -47,6 +48,10 @@ class MainController extends AbstractController
             size: new Size(800, 600),
             position: new Position(50,50)
         );
+        /** @var MainMenu $menuBar */
+        $menuBar = $this->window->getMenuBar();
+        $menuBar->exitItem->setOnClick(fn() => $this->clickExit());
+
         $this->window->exitButton->setOnClick(fn() => $this->clickExit());
         $this->window->reloadButton->setOnClick(fn() => $this->clickReload());
         $this->window->clearButton->setOnClick(fn() => $this->clickClear());

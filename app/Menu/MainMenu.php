@@ -6,15 +6,19 @@ use PHPGui\Ui\Widgets\Menu\MenuItem;
 use PHPGui\Ui\Widgets\Menu\Separator;
 use PHPGui\Ui\Widgets\MenuBar;
 
-class MainMenu
+class MainMenu extends MenuBar
 {
+    public MenuItem $exitItem;
 
-    public function buildMainMenu(?\Closure $onExitClick): MenuBar {
-        return new MenuBar(menuItems: [
+    public function __construct(array $menuItems = [])
+    {
+        $this->exitItem = new MenuItem(title: "Exit");
+
+        $items = [
             (new MenuItem(title: "File", subMenu: [
                 (new MenuItem(title: "Settings")),
                 (new Separator()),
-                (new MenuItem(title: "Exit", onClick: $onExitClick)),
+                $this->exitItem,
             ])),
             (new MenuItem(title: "Module", subMenu: [
                 (new MenuItem(title: "Server")),
@@ -26,7 +30,8 @@ class MainMenu
                 (new MenuItem(title: "Help")),
                 (new MenuItem(title: "About")),
             ]))
-        ]);
-    }
+        ];
 
+        parent::__construct($items);
+    }
 }
