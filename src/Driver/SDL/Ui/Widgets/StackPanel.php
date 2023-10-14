@@ -23,7 +23,7 @@ class StackPanel extends Base implements Widget, Element
     {
         return match ($actWidget->getMode()) {
             StackpanelMode::STACK => $this->renderStackMode($this->window, $availableViewPort, $actWidget),
-            Default => $this->renderNormalMode($this->window, $availableViewPort, $actWidget)
+            StackpanelMode::NORMAL => $this->renderNormalMode($this->window, $availableViewPort, $actWidget)
         };
     }
 

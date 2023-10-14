@@ -25,6 +25,7 @@ class TextEdit extends Base
         $this->addStateStyle(State::HOVER, (new Style())->setBackgroundColor(new Color(255,255,255,255))->setBorder((new Border())->setAll(2, new Color(136,23,152,255)))->setFont((new Font())->setSize(14)));
 
         $this->cursorIndex = strlen($value);
+        $this->value = $value;
         $this->scrollIndex = 0;
         return $this;
     }

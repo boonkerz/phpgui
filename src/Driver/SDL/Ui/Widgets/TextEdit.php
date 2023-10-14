@@ -32,7 +32,7 @@ class TextEdit extends Base implements Widget, Element
         $rectBox->h = $actWidget->getHeight();
 
         if($this->window->getEvent() && $this->window->getEvent()->getType() === EventType::MOUSEBUTTON_UP) {
-            if( $rectBox->x <= $this->window->getEvent()->x && $this->window->getEvent()->x <= $rectBox->x + $rectBox->w && $rectBox->y <= $this->window->getEvent()->y && $this->window->getEvent()->y <= $rectBox->y + $rectBox->w ) {
+            if( $rectBox->x <= $this->window->getEvent()->x && $this->window->getEvent()->x <= $rectBox->x + $rectBox->w && $rectBox->y <= $this->window->getEvent()->y && $this->window->getEvent()->y <= $rectBox->y + $rectBox->h ) {
                 $actWidget->setState(State::FOCUS);
                 $this->textEditIndex = strlen($actWidget->getValue());
                 $this->textScrollIndex = 0;
@@ -42,7 +42,7 @@ class TextEdit extends Base implements Widget, Element
         }
 
         if($this->window->getEvent() && $this->window->getEvent()->getType() === EventType::MOUSEMOVE && $actWidget->getState() !== State::FOCUS) {
-            if( $rectBox->x <= $this->window->getEvent()->x && $this->window->getEvent()->x <= $rectBox->x + $rectBox->w && $rectBox->y <= $this->window->getEvent()->y && $this->window->getEvent()->y <= $rectBox->y + $rectBox->w ) {
+            if( $rectBox->x <= $this->window->getEvent()->x && $this->window->getEvent()->x <= $rectBox->x + $rectBox->w && $rectBox->y <= $this->window->getEvent()->y && $this->window->getEvent()->y <= $rectBox->y + $rectBox->h ) {
                 $actWidget->setState(State::HOVER);
             }else{
                 $actWidget->setState(State::NORMAL);
@@ -68,8 +68,8 @@ class TextEdit extends Base implements Widget, Element
         $rectFont = $this->SDL->new('SDL_Rect');
         $rectFont->x = $availableViewPort->x + $actWidget->getMargin() + $actWidget->getPadding();
         $rectFont->y = $availableViewPort->y + $actWidget->getMargin(Pos::TOP) + $actWidget->getPadding(Pos::TOP);
-        $rectFont->w = 20;
-        $rectFont->h = 20;
+        $rectFont->w = 0;
+        $rectFont->h = 0;
 
 
         if ($actWidget->getValue() != "") {

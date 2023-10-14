@@ -9,14 +9,16 @@ use PHPGui\Ui\Widgets\MenuBar;
 class MainMenu extends MenuBar
 {
     public MenuItem $exitItem;
+    public MenuItem $settingItem;
 
     public function __construct(array $menuItems = [])
     {
         $this->exitItem = new MenuItem(title: "Exit");
+        $this->settingItem = new MenuItem(title: "Settings");
 
         $items = [
             (new MenuItem(title: "File", subMenu: [
-                (new MenuItem(title: "Settings")),
+                $this->settingItem,
                 (new Separator()),
                 $this->exitItem,
             ])),

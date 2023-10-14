@@ -20,7 +20,7 @@ class Base implements Widget
 
     private $margin = [0, 0, 0, 0];
 
-    private $padding = [0, 0, 0, 0];
+    private $padding = [1, 1, 1, 1];
 
     private Border $border;
 

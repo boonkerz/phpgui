@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\App;
+use App\Model\AppSetting;
 use App\Model\Server;
 use App\Windows\MainWindow;
 use App\Windows\SettingsWindow;
@@ -26,7 +27,7 @@ class SettingsController extends AbstractController
 
     protected SettingsWindow $window;
 
-    public function __construct(App $app, Driver $driver)
+    public function __construct(App $app, Driver $driver, private AppSetting $setting)
     {
         parent::__construct($app, $driver);
         $this->init();
@@ -36,14 +37,16 @@ class SettingsController extends AbstractController
     {
         $this->window = new SettingsWindow(
             title: 'Settings',
-            size: new Size(200, 200),
+            size: new Size(400, 200),
             position: new Position(50, 50)
         );
 
-        $this->window->exitButton->setOnClick(fn() => $this->clickExit());
+        $this->window->saveButton->setOnClick(fn() => $this->clickExit());
     }
 
     private function clickExit(): void {
+        $this->setting->setHetznerApiKey($this->window->apiKey->getValue());
+        $this->setting->save();
         $this->closeWindow();
     }
 }

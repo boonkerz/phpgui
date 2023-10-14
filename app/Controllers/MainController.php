@@ -51,11 +51,10 @@ class MainController extends AbstractController
         /** @var MainMenu $menuBar */
         $menuBar = $this->window->getMenuBar();
         $menuBar->exitItem->setOnClick(fn() => $this->clickExit());
+        $menuBar->settingItem->setOnClick(fn() => $this->clickOpenSettings());
 
-        $this->window->exitButton->setOnClick(fn() => $this->clickExit());
         $this->window->reloadButton->setOnClick(fn() => $this->clickReload());
         $this->window->clearButton->setOnClick(fn() => $this->clickClear());
-        $this->window->settingsButton->setOnClick(fn() => $this->clickOpenSettings());
         $this->window->textEdit1->value = &$this->text;
         $this->window->textEdit2->value = &$this->text;
     }

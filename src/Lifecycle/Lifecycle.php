@@ -24,20 +24,20 @@ class Lifecycle implements WorkerInterface
 
     public LoopInterface $loop;
 
-    public Application $app;
+    public Application $appContainer;
 
     protected ?object $controller = null;
 
     protected Collection $contextCollection;
     protected ?Context $context = null;
 
-    public function __construct(Application $app)
+    public function __construct(Application $appContainer)
     {
-        $app->instance(self::class, $this);
-        $app->instance(static::class, $this);
+        $appContainer->instance(self::class, $this);
+        $appContainer->instance(static::class, $this);
         $this->contextCollection = new Collection();
-        $this->app = $app;
-        $this->loop = $app->make(LoopInterface::class);
+        $this->appContainer = $appContainer;
+        $this->loop = $appContainer->make(LoopInterface::class);
 
         $this->loop->use($this);
     }
@@ -108,12 +108,12 @@ class Lifecycle implements WorkerInterface
 
         foreach ($arguments as $name => $argument) {
             if (\class_exists($name) || \interface_exists($name)) {
-                $this->app->instance($name, $argument);
+                $this->appContainer->instance($name, $argument);
             }
         }
 
-        $controller = $this->app->make($controller);
-        $context = $this->app->make(Context::class, [
+        $controller = $this->appContainer->make($controller);
+        $context = $this->appContainer->make(Context::class, [
             'context' => $controller,
         ]);
 
@@ -129,6 +129,6 @@ class Lifecycle implements WorkerInterface
 
     public function run(): void
     {
-        $this->app->run();
+        $this->appContainer->run();
     }
 }
