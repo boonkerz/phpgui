@@ -11,7 +11,6 @@ use PHPGui\Ui\Style\Style;
 
 class Base implements Widget
 {
-
     private string $uuid;
 
     private State $state;
@@ -59,8 +58,6 @@ class Base implements Widget
         return $this;
     }
 
-
-
     public function getState(): State
     {
         return $this->state;
@@ -71,9 +68,6 @@ class Base implements Widget
         $this->state = $state;
     }
 
-    /**
-     * @return string
-     */
     public function getUuid(): string
     {
         if(!$this->uuid) {
@@ -82,9 +76,6 @@ class Base implements Widget
         return $this->uuid;
     }
 
-    /**
-     * @param string $uuid
-     */
     public function setUuid(string $uuid): void
     {
         $this->uuid = $uuid;

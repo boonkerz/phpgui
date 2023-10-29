@@ -29,7 +29,10 @@ class SettingsWindow extends Window
         $this->apiKey = new TextEdit("");
 
         $this->setWidget((new StackPanel(widgets: [
-            (new StackPanel(widgets: [(new Label("Hetzner Api Key"))->setWidth(150), $this->apiKey]))->setAlign(AlignType::HORIZONTAL)->setMode(StackpanelMode::STACK),
+            (new StackPanel(widgets: [
+                (new Label("Hetzner Api Key"))->setWidth(150),
+                $this->apiKey
+            ]))->setAlign(AlignType::HORIZONTAL)->setMode(StackpanelMode::STACK),
             $this->saveButton
         ]))->setColumnSizes([20,20,20])->setAlign(AlignType::VERTICAL));
     }

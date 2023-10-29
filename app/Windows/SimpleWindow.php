@@ -34,7 +34,11 @@ class SimpleWindow extends Window
         $this->exitButton = (new Button("Exit"))->setMarginAll(2)->setPaddingAll(2);
         $this->settingsButton = (new Button("Settings"))->setMarginAll(2)->setPaddingAll(2);
         $this->setWidget(
-            (new StackPanel(widgets: [$this->exitButton, $this->settingsButton]))->setColumnSizes([30, 30])->setAlign(AlignType::VERTICAL)->setSizeType(SizeType::PX)
+            (new StackPanel(widgets:
+                [
+                    $this->exitButton, $this->settingsButton
+                ]
+            ))->setColumnSizes([30, 30])->setAlign(AlignType::VERTICAL)->setSizeType(SizeType::PX)
         );
     }
 }

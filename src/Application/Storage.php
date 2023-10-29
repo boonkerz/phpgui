@@ -3,21 +3,28 @@ declare(strict_types=1);
 
 namespace PHPGui\Application;
 
-class Settings
+use Symfony\Component\Filesystem\Path;
+
+class Storage
 {
 
-    public function save(object $model): void
+    public function saveModel(object $model): void
     {
 
     }
 
-    public function load(string $class): void
+    /**
+     * @template T
+     * @param class-string<T> $className
+     * @return T
+     */
+    public function loadModel(string $className): object
     {
-
+        dump($this->getLocalAppData());
     }
 
 
-    private function get_application_config_dir() {
+    private function getLocalAppData() {
         $homeDir = $_SERVER['HOME'] ?? '';
 
         if(empty($homeDir)) {

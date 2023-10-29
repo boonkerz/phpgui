@@ -10,6 +10,7 @@ use App\Windows\MainWindow;
 use App\Windows\SettingsWindow;
 use parallel\Events;
 use parallel\Runtime;
+euse PHPGui\Application\Storage;
 use PHPGui\Controller\AbstractController;
 use PHPGui\Event\Event;
 use PHPGui\Event\EventType;
@@ -27,7 +28,7 @@ class SettingsController extends AbstractController
 
     protected SettingsWindow $window;
 
-    public function __construct(App $app, Driver $driver, private AppSetting $setting)
+    public function __construct(App $app, Driver $driver, private Storage $storage)
     {
         parent::__construct($app, $driver);
         $this->init();
@@ -41,6 +42,8 @@ class SettingsController extends AbstractController
             position: new Position(50, 50)
         );
 
+        $setting = $this->storage->loadModel(AppSetting::class);
+        $this->window->apiKey = $setting->getHetznerApiKey();
         $this->window->saveButton->setOnClick(fn() => $this->clickExit());
     }
 
