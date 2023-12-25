@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\App;
+use App\Main;
 
 if (!is_file(__DIR__ . '/vendor/autoload.php')) {
     fwrite(STDERR, 'Install dependencies using Composer');
@@ -11,7 +11,5 @@ if (!is_file(__DIR__ . '/vendor/autoload.php')) {
 
 require __DIR__ . '/vendor/autoload.php';
 
-
-
-$app = new App();
+$app = new Main();
 $app->run();

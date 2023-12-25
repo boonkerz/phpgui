@@ -2,7 +2,7 @@
 
 namespace PHPGui\Controller;
 
-use App\App;
+use App\Main;
 use parallel\Events;
 use parallel\Runtime;
 use PHPGui\Interface\Driver\Driver;
@@ -15,7 +15,7 @@ use PHPGui\Ui\Window;
 class AbstractController
 {
 
-    public function __construct(protected App $app, private Driver $driver)
+    public function __construct(protected Main $app, private Driver $driver)
     {
     }
 

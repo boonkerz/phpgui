@@ -42,11 +42,16 @@
     "sabberworm/php-css-parser": "^8.4",
     "webmozart/assert": "^1.11",
     "lkdevelopment/hetzner-cloud-php-sdk": "^2.6",
-    "ext-parallel": "*"
+    "ext-parallel": "*",
+    "zumba/json-serializer": "^3"
   },
   "config": {
     "allow-plugins": {
-      "local/binaries-downloader": true
+      "local/binaries-downloader": true,
+      "bamarni/composer-bin-plugin": true
     }
+  },
+  "require-dev": {
+    "bamarni/composer-bin-plugin": "^1.8"
   }
 }

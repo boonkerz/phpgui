@@ -3,14 +3,24 @@ declare(strict_types=1);
 
 namespace PHPGui\Application;
 
+use Illuminate\Config\Repository;
+use PHPGui\Provider\ConfigServiceProvider;
 use Symfony\Component\Filesystem\Path;
+use Zumba\JsonSerializer\JsonSerializer;
 
 class Storage
 {
+    public function __construct(private readonly Repository $config, private readonly JsonSerializer $jsonSerializer)
+    {
+    }
 
     public function saveModel(object $model): void
     {
-
+        $path = $this->getLocalAppData() . DIRECTORY_SEPARATOR . md5($model::class). '.json';
+        if(!file_exists($this->getLocalAppData())) {
+            mkdir($this->getLocalAppData(), 0777, true);
+        }
+        file_put_contents($path, $this->jsonSerializer->serialize($model));
     }
 
     /**
@@ -20,7 +30,12 @@ class Storage
      */
     public function loadModel(string $className): object
     {
-        dump($this->getLocalAppData());
+        $path = $this->getLocalAppData() . DIRECTORY_SEPARATOR . md5($className). '.json';
+        if(file_exists($path)) {
+            return $this->jsonSerializer->unserialize(file_get_contents($path));
+        }else{
+            return new $className();
+        }
     }
 
 
@@ -45,7 +60,7 @@ class Storage
             }
         }
 
-        return $homeDir;
+        return implode(DIRECTORY_SEPARATOR ,[$homeDir, $this->config->get('app')['appId']]);
     }
 
     private function is_windows() {

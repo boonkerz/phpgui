@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\App;
+use App\Main;
 use App\Menu\MainMenu;
 use App\Model\Server;
 use App\Windows\MainWindow;
@@ -32,7 +32,7 @@ class MainController extends AbstractController
     public Runtime $runtime;
 
 
-    public function __construct(App $app, Driver $driver)
+    public function __construct(Main $app, Driver $driver)
     {
         parent::__construct($app, $driver);
         $this->events = new Events();
